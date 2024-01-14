@@ -1,9 +1,9 @@
 package org.example;
 
-public class Statistics implements IStatistics{
+public class Statistics implements IStatistics {
     IStatistics statistics;
 
-    public Statistics(IStatistics statistics){
+    public Statistics(IStatistics statistics) {
         this.statistics = statistics;
     }
 
@@ -27,13 +27,15 @@ public class Statistics implements IStatistics{
         statistics.printResult();
     }
 
-    public int getIntegerCount(){
+    public int getIntegerCount() {
         return statistics.getIntegerCount();
     }
-    public int getFloatCount(){
+
+    public int getFloatCount() {
         return statistics.getFloatCount();
     }
-    public int getStringCount(){
+
+    public int getStringCount() {
         return statistics.getStringCount();
     }
 

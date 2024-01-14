@@ -1,24 +1,19 @@
 package org.example;
 
-public class FullStatistics implements IStatistics{
-
+public class FullStatistics implements IStatistics {
     private int floatCount = 0;
     private int stringCount = 0;
     private int integerCount = 0;
-    private float maxNumber=Float.MIN_VALUE;
-    private float minNumber=Float.MAX_VALUE;
-    private float maxString=Integer.MIN_VALUE;
-    private float minString=Integer.MAX_VALUE;
+    private float maxNumber = Float.MIN_VALUE;
+    private float minNumber = Float.MAX_VALUE;
+    private int maxString = Integer.MIN_VALUE;
+    private int minString = Integer.MAX_VALUE;
     private float sum, average;
-
-
 
     public void addFloat(String line) {
         floatCount++;
         checkNumber(line);
     }
-
-
 
     public void addString(String line) {
         stringCount++;
@@ -44,7 +39,7 @@ public class FullStatistics implements IStatistics{
         return integerCount;
     }
 
-    public void printResult(){
+    public void printResult() {
         System.out.printf("Натуральных чисел: %d\n", floatCount);
         System.out.printf("Целых чисел: %d\n", integerCount);
         System.out.printf("Максимальное число: %f\n", maxNumber);
@@ -52,26 +47,26 @@ public class FullStatistics implements IStatistics{
         System.out.printf("Сумма: %f\n", sum);
         System.out.printf("Среднее: %f\n", average);
         System.out.printf("Строк: %d\n", stringCount);
-        System.out.printf("Максимальная длина строки: %f\n", maxString);
-        System.out.printf("Минимальная длина строки: %f\n", minString);
+        System.out.printf("Максимальная длина строки: %d\n", maxString);
+        System.out.printf("Минимальная длина строки: %d\n", minString);
 
     }
 
-    public void checkNumber(String line){
+    public void checkNumber(String line) {
         float number = Float.parseFloat(line);
-        if (number>maxNumber)
-            maxNumber=number;
-        if (number<minNumber)
-            minNumber=number;
+        if (number > maxNumber)
+            maxNumber = number;
+        if (number < minNumber)
+            minNumber = number;
 
-        sum+=number;
-        average = sum/(integerCount+floatCount);
+        sum += number;
+        average = sum / (integerCount + floatCount);
     }
 
-    public void checkString(String line){
-        if (line.length()>maxString)
+    public void checkString(String line) {
+        if (line.length() > maxString)
             maxString = line.length();
-        if (line.length()<minString)
+        if (line.length() < minString)
             minString = line.length();
     }
 }

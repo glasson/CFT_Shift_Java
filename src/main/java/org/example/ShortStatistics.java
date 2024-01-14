@@ -1,6 +1,6 @@
 package org.example;
 
-public class ShortStatistics implements IStatistics{
+public class ShortStatistics implements IStatistics {
 
     private int floatCount = 0;
     private int stringCount = 0;
@@ -26,9 +26,8 @@ public class ShortStatistics implements IStatistics{
     }
 
 
-
     @Override
-    public void printResult(){
+    public void printResult() {
         System.out.printf("Натуральных чисел: %d\n", floatCount);
         System.out.printf("Целых чисел: %d\n", integerCount);
         System.out.printf("Строк: %d\n", stringCount);

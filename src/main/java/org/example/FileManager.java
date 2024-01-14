@@ -4,23 +4,23 @@ import java.io.File;
 import java.io.IOException;
 
 public class FileManager {
-    boolean needRewriteFile;
     String filePrefix;
     String filteredFilesPath = "./";
     String[] fileNames = {"integers.txt", "floats.txt", "strings.txt"};
+    boolean needRewriteFile;
 
-    public FileManager(boolean needRewriteFile, String filePrefix, String filteredFilesPath){
+    public FileManager(boolean needRewriteFile, String filePrefix, String filteredFilesPath) {
         this.needRewriteFile = needRewriteFile;
         this.filePrefix = filePrefix;
-        if (filteredFilesPath!=null)
+        if (filteredFilesPath != null)
             this.filteredFilesPath = filteredFilesPath;
         checkSlash();
     }
 
-    public String[] createOrCheckFiles(){//result
-        //concat prefix
+    public String[] createOrCheckFiles() {//result
         String[] fileNames = getFileNamesWithPrefix();
-        //mk files
+        checkOrMakeDirs();
+        //mk result files
         for (int i = 0; i < fileNames.length; i++) {
             fileNames[i] = filteredFilesPath.concat(fileNames[i]);
             if (needRewriteFile) {
@@ -39,48 +39,55 @@ public class FileManager {
         return fileNames;
     }
 
-    private String[] getFileNamesWithPrefix(){
-        if (filePrefix!=null) {
+    private String[] getFileNamesWithPrefix() {
+        if (filePrefix != null) {
             for (int i = 0; i < fileNames.length; i++)
                 fileNames[i] = filePrefix.concat(fileNames[i]);
         }
         return fileNames;
     }
 
-    private void checkSlash(){
+    private void checkSlash() {
         String lastSymbol = filteredFilesPath.substring(filteredFilesPath.length() - 1);
         if (!lastSymbol.equals("/"))
             filteredFilesPath = filteredFilesPath.concat("/");
     }
-    private void checkOrMakeDirs(){
+
+    private void checkOrMakeDirs() {
         //mkdirs
         try {
             File dirs = new File(filteredFilesPath);
             if (!dirs.exists())
                 dirs.mkdirs();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Path is not exist or can`t be made");
         }
     }
 
-    public void deleteBlankFiles(Statistics statistics){
+    public void deleteBlankFiles() {
         checkSlash();
-        String[] fileNames = getFileNamesWithPrefix();
-        int i = statistics.getIntegerCount();
-        int f = statistics.getFloatCount();
-        int s = statistics.getStringCount();
-        if (i==0){
-            var intFile = filteredFilesPath.concat(fileNames[0]);
-            (new File(intFile)).delete();
+        var intFilePath = fileNames[0];
+        var intFile = new File(intFilePath);
+        if (intFile.exists() && intFile.length() == 0) {
+            intFile.delete();
+            System.out.println("Integers was not found");
         }
-        if (f==0){
-            var floatFile = filteredFilesPath.concat(fileNames[1]);
-            (new File(floatFile)).delete();
+
+        var floatFilePath = fileNames[1];
+        var floatFile = new File(floatFilePath);
+        if (floatFile.exists() && floatFile.length() == 0) {
+            floatFile.delete();
+            System.out.println("Real numbers was not found");
         }
-        if (s==0){
-            var strFile = filteredFilesPath.concat(fileNames[2]);
-            (new File(strFile)).delete();
+
+        var strFilePath = fileNames[2];
+        var strFile = new File(strFilePath);
+        if (strFile.exists() && strFile.length() == 0) {
+            strFile.delete();
+            System.out.println("Strings was not found");
         }
+
+
     }
 
 }

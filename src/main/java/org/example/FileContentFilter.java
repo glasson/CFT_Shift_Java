@@ -8,30 +8,38 @@ import java.util.ArrayList;
 public class FileContentFilter {
     enum DataTypesEnum {STRING, INTEGER, FLOAT}
 
-    boolean needRewriteFile = true;
-    ArrayList<String> inputFiles;
+    boolean collectStatistics = false;
+    ArrayList<String> dataFiles;
     FileManager fileManager;
+    boolean needRewriteFile = true;
     Statistics statistics;
 
-    public FileContentFilter(boolean needRewriteFile, ArrayList<String> inputFiles, FileManager fileManager){
-        this.needRewriteFile=needRewriteFile;
-        this.inputFiles=inputFiles;
-        this.fileManager = fileManager;
-    }
-    public FileContentFilter(boolean needRewriteFile, ArrayList<String> inputFiles, FileManager fileManager, Statistics statistics){
-        this.needRewriteFile=needRewriteFile;
-        this.inputFiles=inputFiles;
-        this.statistics = statistics;
-        this.fileManager = fileManager;
+
+    public FileContentFilter(boolean needRewriteFile, ArrayList<String> dataFiles) {
+        this.needRewriteFile = needRewriteFile;
+        this.dataFiles = dataFiles;
     }
 
-    public void filterContent(String[] resultFileNames){
+    public FileContentFilter(boolean needRewriteFile, ArrayList<String> dataFiles, Statistics statistics) {
+        this.needRewriteFile = needRewriteFile;
+        this.dataFiles = dataFiles;
+        this.statistics = statistics;
+        collectStatistics = true;
+    }
+
+    public void filterContent(String[] resultFileNames) {
         try (BufferedWriter intWriter = new BufferedWriter(new FileWriter(resultFileNames[0], !needRewriteFile));
              BufferedWriter floatWriter = new BufferedWriter(new FileWriter(resultFileNames[1], !needRewriteFile));
              BufferedWriter stringsWriter = new BufferedWriter(new FileWriter(resultFileNames[2], !needRewriteFile))) {
 
-            for (String dataFile : inputFiles) {
-                BufferedReader reader = new BufferedReader(new FileReader(dataFile));
+            for (String dataFile : dataFiles) {
+                BufferedReader reader;
+                try {
+                    reader = new BufferedReader(new FileReader(dataFile));
+                } catch (FileNotFoundException e) {
+                    System.out.printf("file '%s' was not found and skipped\n", dataFile);
+                    continue;
+                }
 
                 String line;
                 while (true) {
@@ -43,17 +51,20 @@ public class FileContentFilter {
                         case FLOAT:
                             floatWriter.write(line);
                             floatWriter.newLine();
-                            statistics.addFloat(line);
+                            if (collectStatistics)
+                                statistics.addFloat(line);
                             break;
                         case STRING:
                             stringsWriter.write(line);
                             stringsWriter.newLine();
-                            statistics.addString(line);
+                            if (collectStatistics)
+                                statistics.addString(line);
                             break;
                         case INTEGER:
                             intWriter.write(line);
                             intWriter.newLine();
-                            statistics.addInteger(line);
+                            if (collectStatistics)
+                                statistics.addInteger(line);
                             break;
                     }
                 }
@@ -63,9 +74,9 @@ public class FileContentFilter {
         }
     }
 
-    public static DataTypesEnum identifyLineType(String line){
-        if (NumberUtils.isCreatable(line)){
-            if (line.contains(".") || line.contains("e")){
+    public static DataTypesEnum identifyLineType(String line) {
+        if (NumberUtils.isCreatable(line)) {
+            if (line.contains(".") || line.contains("e")) {
                 return DataTypesEnum.FLOAT;
             } else {
                 return DataTypesEnum.INTEGER;
@@ -73,5 +84,10 @@ public class FileContentFilter {
         } else {
             return DataTypesEnum.STRING;
         }
+    }
+
+    public void setStatistics(Statistics s) {
+        statistics = s;
+        collectStatistics = true;
     }
 }
