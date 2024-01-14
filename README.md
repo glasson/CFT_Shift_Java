@@ -2,7 +2,7 @@
 
 <b>Для сборки использовался - Maven v3.8.1</b>
 
-<b>Зависимости
+<b>Зависимости</b>
     - Apache Commons Lang v3.14.0 (https://mvnrepository.com/artifact/org.apache.commons/commons-lang3/3.14.0)
 
 ### Использование
