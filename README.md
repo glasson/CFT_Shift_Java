@@ -1,4 +1,5 @@
 <b>Java version - 20.0.1</b>
+
 <b>Для сборки использовался Maven v3.8.1</b>
 
 <b>Зависимости
@@ -14,4 +15,4 @@
     - <b>-f</b>. При использовании после выполнения программы будет выведено количество строк с каждым типом данных. Для чисел - минимальное и максимальное значения, сумма и среднее. Для строк - длина самой длинной и короткой строк.
 
 #### Пример
-    - java -jar file-content-filter-jar-with-dependencies.jar -f -o result/ -p result_ -a ./data/in1.txt ./data/in2.txt
+    java -jar file-content-filter-jar-with-dependencies.jar -f -o result/ -p result_ -a ./data/in1.txt ./data/in2.txt
